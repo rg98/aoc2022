@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 
 
-elfs = []
+elfs: list[list[int]] = []
 
 with open('in.23', 'r') as fd:
-    n = 0
+    n: int = 0
     for line in fd:
-        plan = list(line[:-1])
+        plan:[str] = list(line[:-1])
         elfs.extend(list(map(lambda e: [e[0], n], 
                       list(filter(lambda p: p[1] == '#', enumerate(list(plan)))))))
         n += 1
 
-rules = ['north', 'south', 'west', 'east']
+rules:list[str] = ['north', 'south', 'west', 'east']
 
-def rotate(l):
+def rotate(l:list[str]):
     first = l.pop(0)
     l.append(first)
 
-def test_direction(elf, elfs, rule):
+def test_direction(elf:list[int], elfs:list[list[int]], rule:str) -> bool:
     if rule == 'north':
         if [elf[0]  , elf[1]-1] in elfs or \
            [elf[0]+1, elf[1]-1] in elfs or \
@@ -40,7 +40,7 @@ def test_direction(elf, elfs, rule):
             return False
     return True
 
-def has_neighbors(elf, elfs):
+def has_neighbors(elf:list[int], elfs:list[list[int]]) -> bool:
     if [elf[0]  , elf[1]-1] in elfs or \
        [elf[0]+1, elf[1]-1] in elfs or \
        [elf[0]+1, elf[1]  ] in elfs or \
@@ -52,27 +52,27 @@ def has_neighbors(elf, elfs):
         return True
     return False
 
-def do_round(elfs):
-    planed_moves = []
-    no_move = True
+def do_round(elfs:list[list[int]]) -> bool:
+    planed_moves:list[tuple[int, list[int]]] = []
+    no_move:bool = True
     for i, elf in enumerate(elfs):
         if has_neighbors(elf, elfs):
             for rule in rules:
                 if test_direction(elf, elfs, rule):
                     if rule == 'north':
-                        planed_moves.append([i, [elf[0], elf[1]-1]])
+                        planed_moves.append((i, [elf[0], elf[1]-1]))
                         no_move = False
                         break
                     elif rule == 'south':
-                        planed_moves.append([i, [elf[0], elf[1]+1]])
+                        planed_moves.append((i, [elf[0], elf[1]+1]))
                         no_move = False
                         break
                     elif rule == 'west':
-                        planed_moves.append([i, [elf[0]-1, elf[1]]])
+                        planed_moves.append((i, [elf[0]-1, elf[1]]))
                         no_move = False
                         break
                     elif rule == 'east':
-                        planed_moves.append([i, [elf[0]+1, elf[1]]])
+                        planed_moves.append((i, [elf[0]+1, elf[1]]))
                         no_move = False
                         break
     while len(planed_moves) > 0:
@@ -86,8 +86,8 @@ def do_round(elfs):
     rotate(rules)
     return no_move
 
-moved = True
-n_rounds = 0
+moved:bool = True
+n_rounds:int = 0
 while moved:
     moved = not do_round(elfs)
     elfs = sorted(elfs, key=lambda elf: (elf[1], elf[0]))
@@ -95,7 +95,7 @@ while moved:
     n_rounds += 1
     print(f"Round {n_rounds} done")
 
-#print(elfs)
+print(elfs)
 print(f"{n_rounds} rounds")
 
 x = list(map(lambda elf: elf[0], elfs))
