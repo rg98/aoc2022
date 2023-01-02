@@ -77,7 +77,7 @@ def do_round(elfs:set[tuple[int,int]]) -> bool:
                         break
     while len(planed_moves) > 0:
         move = planed_moves.pop(0)
-        duplicates = list(filter(lambda m: m[1] == move[1], planed_moves))
+        duplicates = list({ m for m in planed_moves if m[1] == move[1] })
         if len(duplicates) > 0:
             for d in duplicates:
                 planed_moves.pop(planed_moves.index(d))
