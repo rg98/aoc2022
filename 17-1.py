@@ -93,9 +93,7 @@ def drop_rock(rock:list[int], cave_bits:list[int], gas:list[str], show:bool = Fa
     """Append rock to cave at hight top_rock + 3.
        Then drop the rock."""
     top = get_top_rock(cave_bits)
-    print(f'append {len(cave_bits) - len(rock), top + 4}')
     for _ in range(len(cave_bits) - len(rock), top + 4):
-        print('append one')
         cave_bits.append(0x101)
     current_row = top + 4 # len(cave_bits) - len(rock)
     x = 0
@@ -139,7 +137,6 @@ for n in range(2022):
     rock_height = len(rocks_bits[n % len(rocks_bits)])
     top_rock = get_top_rock(cave_bits)
     increment = 4 + top_rock + rock_height - len(cave_bits)
-    print(f'append {increment} - height: {rock_height}, top: {top_rock}')
     for _ in range(increment):
         cave_bits.append(0x101)
     drop_rock(rocks_bits[n % len(rocks_bits)], cave_bits, gas)
